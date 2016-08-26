@@ -78,3 +78,25 @@ def Consensus(Motifs):
                 frequentSymbol = symbol
         consensus += frequentSymbol
     return consensus
+
+def Score(Motifs):
+    """
+	returns the number of unpopular letter in the motif matrix (Motifs).
+
+	:param Motifs: the motif matrix.
+	:type Motifs: a list of string
+	:return: the number of unpopular letters in the motif matrix.
+	:rtype: int
+
+	..seealso:: Count(), Consensus()
+    """
+    t = len(Motifs)
+    k = len(Motifs[0])
+    score=0
+    count=Count(Motifs)
+    consensus = Consensus(Motifs)
+    for symbol in "ACGT":
+        for j in range(k):
+            if symbol != consensus[j]:
+                score += count[symbol][j]
+    return score
