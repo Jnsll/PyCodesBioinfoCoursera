@@ -116,9 +116,19 @@ def patternMatching(Pattern, Genome):
             positions.append(i)
     return positions
 
-def SymbolArray(Genome, symbol):
+def symbolArray(Genome, symbol):
     """
 	Counts how often a symbol appears in the Genome.
+
+	:param Genome: the text in which the symbol has to be looked for.
+	:param symbol: the symbol to look for.
+	:type Genome: string
+	:type symbol: string
+	:return: the number of time the symbol appears extending the length of Genome taking into account.
+	:rtype: dict of list of int
+
+	..warnings:: symbol must be a signle letter among G,C,T or A.
+	..seealso:: patternCount()
     """
 
     array = {}
@@ -126,4 +136,31 @@ def SymbolArray(Genome, symbol):
     ExtendedGenome = Genome + Genome[0:n//2]
     for i in range(n):
         array[i] = patternCount(symbol, ExtendedGenome[i:i+(n//2)])
+    return array
+
+def FasterSymbolArray(Genome, symbol):
+    """
+	Counts how often a symbol appears in the Genome.
+	Faster than SymbolArray().
+
+	:param Genome: the text in which the symbol has to be looked for.
+        :param symbol: the symbol to look for.
+        :type Genome: string
+        :type symbol: string
+        :return: the number of time the symbol appears extending the length of Genome taking into account.
+        :rtype: dict of list of int
+
+        ..warnings:: symbol must be a signle letter among G,C,T or A.
+        ..seealso:: patternCount()
+    """
+    array = {}
+    n = len(Genome)
+    ExtendedGenome = Genome + Genome[0:n//2]
+    array[0] = patternCount(symbol, Genome[0:n//2])
+    for i in range(1, n):
+        array[i] = array[i-1]
+        if ExtendedGenome[i-1] == symbol:
+            array[i] = array[i]-1
+        if ExtendedGenome[i+(n//2)-1] == symbol:
+            array[i] = array[i]+1
     return array
