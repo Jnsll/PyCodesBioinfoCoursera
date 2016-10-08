@@ -100,3 +100,28 @@ def Score(Motifs):
             if symbol != consensus[j]:
                 score += count[symbol][j]
     return score
+
+
+# Input:  String Text and profile matrix Profile
+# Output: Pr(Text, Profile)
+def Pr(Text, Profile):
+    # insert your code here
+    compteur=0
+    Pr=1
+    for letter in Text:
+        Pr=Pr*Profile[letter][compteur]
+        compteur+=1
+    return Pr
+
+
+# Input:  String Text, an integer k, and profile matrix Profile
+# Output: ProfileMostProbablePattern(Text, k, Profile)
+def ProfileMostProbablePattern(Text, k, Profile):
+    prm=-1
+    s=""
+    for i in range(len(Text)-k+1):
+        pr=Pr(Text[i:i+k],Profile)
+        if pr>prm:
+            prm=pr
+            s=str(Text[i:i+k])
+    return str(s)
